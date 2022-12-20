@@ -64,26 +64,36 @@ function geocode(e) {
 	e.preventDefault();
 
 	let location = locationInputEl.value;
-	axios
-		.get("https://maps.googleapis.com/maps/api/geocode/json", {
-			params: {
-				address: location,
-				key: key,
-			},
-		})
+
+	if (!location) {
+		window.alert("no location provided!")
+		return;
+	}
+		else {
+  let apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${key}`;
+	fetch(apiUrl)
 		.then(function (response) {
-			// Log full response
-			console.log(response);
+		// Log full response
+		console.log(response);
+		return response.json();
+		
+	})
+	.then (function (data) {
+		console.log(data)
+		console.log(data.results)
+		console.log(data.results[0])
+		console.log(data.results[0].geometry.location.lat)
+		console.log(data.results[0].geometry.location.lng)
+		let longitude = data.results[0].geometry.location.lng
+		let latitude = data.results[0].geometry.location.lag
+		map.panTo({ lat: latitude, lng: longitude });
+	})
 
-			let latitude = response.data.results[0].geometry.location.lat;
-			let longitude = response.data.results[0].geometry.location.lng;
+	.catch(function (error) {
+		console.log(error);
+	});
 
-			map.panTo({ lat: latitude, lng: longitude });
-		})
-
-		.catch(function (error) {
-			console.log(error);
-		});
+		}
 
 }
 
