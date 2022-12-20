@@ -76,7 +76,7 @@ function geocode(e) {
 		// Log full response
 		console.log(response);
 		return response.json();
-		
+
 	})
 	.then (function (data) {
 		console.log(data)
@@ -85,8 +85,10 @@ function geocode(e) {
 		console.log(data.results[0].geometry.location.lat)
 		console.log(data.results[0].geometry.location.lng)
 		let longitude = data.results[0].geometry.location.lng
-		let latitude = data.results[0].geometry.location.lag
-		map.panTo({ lat: latitude, lng: longitude });
+		let latitude = data.results[0].geometry.location.lat
+
+		var newMapPosition = new google.maps.LatLng(latitude, longitude)
+		map.panTo(newMapPosition);
 	})
 
 	.catch(function (error) {
